@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = ["quicky-ui", "quicky-trim", "quicky-metadata", "quicky-crop", "quicky-redact", "quicky-compress", "quicky-join", "quicky-edit", "quicky-addbg", "quicky-annotate", "quicky-collage", "quicky-video", "quicky-audio", "quicky-organize"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[workspace.dependencies]
+gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }
+libmpv2-sys = "4"
+async-channel = "2"
+anyhow = "1"
+quicky-ui = { path = "quicky-ui" }
+
+[profile.release]
+lto = "thin"
+strip = true

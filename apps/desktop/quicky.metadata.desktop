@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Metadata
+GenericName=Metadata editor
+Comment=Inspect, change, or remove the information embedded in a file
+Exec=quicky-metadata %f
+Icon=document-properties
+Terminal=false
+Categories=Utility;Graphics;AudioVideo;
+MimeType=image/jpeg;image/png;image/webp;image/heic;image/heif;image/tiff;image/avif;video/mp4;video/quicktime;video/x-matroska;video/webm;audio/mpeg;audio/mp4;audio/flac;audio/ogg;audio/x-wav;application/pdf;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;application/vnd.openxmlformats-officedocument.presentationml.presentation;
+StartupWMClass=quicky.metadata

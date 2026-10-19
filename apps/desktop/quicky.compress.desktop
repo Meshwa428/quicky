@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Compress
+GenericName=Compress files
+Comment=Make smaller copies of images, video, audio, and PDFs
+Exec=quicky-compress %F
+Icon=package-x-generic
+Terminal=false
+NoDisplay=true
+Categories=Utility;
+MimeType=image/jpeg;image/png;image/webp;image/heic;image/tiff;image/avif;video/mp4;video/quicktime;video/x-matroska;video/webm;audio/mpeg;audio/mp4;audio/x-wav;audio/flac;audio/ogg;application/pdf;
+StartupWMClass=quicky.compress

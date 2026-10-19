@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Audio Channels
+GenericName=Convert audio channels
+Comment=Turn stereo into mono or mono into stereo, saved as a new copy
+Exec=quicky-channels %f
+Icon=audio-x-generic
+Terminal=false
+NoDisplay=true
+Categories=AudioVideo;Audio;AudioVideoEditing;
+MimeType=audio/mpeg;audio/mp4;audio/x-wav;audio/wav;audio/flac;audio/ogg;audio/opus;audio/aac;audio/x-aiff;audio/x-ms-wma;
+StartupWMClass=quicky.channels

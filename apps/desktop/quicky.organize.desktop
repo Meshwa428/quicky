@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Organize PDF
+GenericName=Organize PDF pages
+Comment=Reorder and rotate a PDF's pages, saved as a new copy
+Exec=quicky-organize %f
+Icon=application-pdf
+Terminal=false
+NoDisplay=true
+Categories=Office;
+MimeType=application/pdf;
+StartupWMClass=quicky.organize

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Normalize
+GenericName=Normalize volume
+Comment=Even out how loud a recording is, saved as a new copy
+Exec=quicky-normalize %f
+Icon=audio-x-generic
+Terminal=false
+NoDisplay=true
+Categories=AudioVideo;Audio;AudioVideoEditing;
+MimeType=audio/mpeg;audio/mp4;audio/x-wav;audio/wav;audio/flac;audio/ogg;audio/opus;audio/aac;audio/x-aiff;audio/x-ms-wma;
+StartupWMClass=quicky.normalize

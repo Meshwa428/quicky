@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Speed
+GenericName=Change video speed
+Comment=Slow a video down or speed it up, saved as a new copy
+Exec=quicky-speed %f
+Icon=video-x-generic
+Terminal=false
+NoDisplay=true
+Categories=AudioVideo;Video;AudioVideoEditing;
+MimeType=video/mp4;video/quicktime;video/x-matroska;video/webm;video/x-msvideo;video/x-ms-wmv;video/x-flv;
+StartupWMClass=quicky.speed

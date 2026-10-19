@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Audio Visualizer
+GenericName=Visualize audio
+Comment=Turn audio into an MP4 with a moving waveform or a still image
+Exec=quicky-visualize %f
+Icon=audio-x-generic
+Terminal=false
+NoDisplay=true
+Categories=AudioVideo;Audio;AudioVideoEditing;
+MimeType=audio/mpeg;audio/mp4;audio/x-wav;audio/wav;audio/flac;audio/ogg;audio/opus;audio/aac;audio/x-aiff;audio/x-ms-wma;
+StartupWMClass=quicky.visualize

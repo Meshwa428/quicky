@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Split Video
+GenericName=Split video
+Comment=Cut a video into clips at chosen points
+Exec=quicky-split %f
+Icon=video-x-generic
+Terminal=false
+NoDisplay=true
+Categories=AudioVideo;Video;AudioVideoEditing;
+MimeType=video/mp4;video/quicktime;video/x-matroska;video/webm;video/x-msvideo;video/x-ms-wmv;video/x-flv;
+StartupWMClass=quicky.split

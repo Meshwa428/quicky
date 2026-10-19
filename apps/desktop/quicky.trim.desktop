@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Trim
+GenericName=Trim video and audio
+Comment=Keep one section of a video or audio file as a new copy
+Exec=quicky-trim %f
+Icon=edit-cut
+Terminal=false
+Categories=AudioVideo;Video;AudioVideoEditing;
+MimeType=video/mp4;video/quicktime;video/x-matroska;video/webm;video/x-msvideo;video/x-ms-wmv;video/x-flv;audio/mpeg;audio/mp4;audio/x-wav;audio/wav;audio/flac;audio/ogg;audio/opus;audio/aac;audio/x-aiff;audio/x-ms-wma;
+StartupWMClass=quicky.trim

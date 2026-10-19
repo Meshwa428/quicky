@@ -1,0 +1,10 @@
+[package]
+name = "quicky-trim"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+gtk.workspace = true
+quicky-ui.workspace = true
+anyhow.workspace = true

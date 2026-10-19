@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Snapshots
+GenericName=Save video frames
+Comment=Save chosen frames of a video as PNGs
+Exec=quicky-snapshot %f
+Icon=video-x-generic
+Terminal=false
+NoDisplay=true
+Categories=AudioVideo;Video;AudioVideoEditing;
+MimeType=video/mp4;video/quicktime;video/x-matroska;video/webm;video/x-msvideo;video/x-ms-wmv;video/x-flv;
+StartupWMClass=quicky.snapshot

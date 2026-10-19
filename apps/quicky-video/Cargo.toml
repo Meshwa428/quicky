@@ -1,0 +1,11 @@
+# The video tools that work at the playhead, one binary each:
+# quicky-speed, quicky-snapshot, quicky-split, quicky-redact-video.
+[package]
+name = "quicky-video"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+gtk.workspace = true
+quicky-ui.workspace = true

@@ -1,0 +1,11 @@
+# The audio tools, one binary each:
+# quicky-normalize, quicky-visualize, quicky-channels, quicky-bleep.
+[package]
+name = "quicky-audio"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+gtk.workspace = true
+quicky-ui.workspace = true

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Quicky Crop
+GenericName=Crop images
+Comment=Cut an image down to a box, saved as a new copy
+Exec=quicky-crop %f
+Icon=transform-crop
+Terminal=false
+Categories=Graphics;2DGraphics;RasterGraphics;
+MimeType=image/jpeg;image/png;image/webp;image/heic;image/heif;image/tiff;image/avif;image/bmp;image/svg+xml;image/x-icon;
+StartupWMClass=quicky.crop

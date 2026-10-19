@@ -1,0 +1,12 @@
+[package]
+name = "quicky-ui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+gtk.workspace = true
+libmpv2-sys.workspace = true
+async-channel.workspace = true
+anyhow.workspace = true
+libc = "0.2"
