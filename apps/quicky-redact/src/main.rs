@@ -223,6 +223,9 @@ fn redact(src: &Path, dst: &Path, boxes: &[Rect], style: Style, strength: i32, (
         let (x, y, w, h) = b.pixels(iw, ih);
         cmd.args(["-draw", &format!("rectangle {x},{y} {},{}", x + w - 1, y + h - 1)]);
     }
-    cmd.args(["-alpha", "off", "-colorspace", "gray", ")", "-composite"]).arg(dst);
+    cmd.args(["-alpha", "off", "-colorspace", "gray", ")", "-composite"]);
+    // EXIF can carry GPS and a thumbnail of the unredacted photo: drop every
+    // profile but the colour one, and any text chunks.
+    cmd.args(["+profile", "!icc,*", "-set", "comment", ""]).arg(dst);
     cmd.status().is_ok_and(|s| s.success())
 }

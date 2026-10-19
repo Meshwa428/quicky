@@ -314,7 +314,8 @@ fn crop_video(src: &Path, dst: &Path, (x, y, w, h): (i32, i32, i32, i32)) -> boo
 fn crop(src: &Path, dst: &Path, (x, y, w, h): (i32, i32, i32, i32)) -> bool {
     Command::new("magick")
         .arg(src)
-        .args(["-auto-orient", "-crop", &format!("{w}x{h}+{x}+{y}"), "+repage"])
+        // The EXIF thumbnail would still show the uncropped picture.
+        .args(["-auto-orient", "-crop", &format!("{w}x{h}+{x}+{y}"), "+repage", "+profile", "!icc,*"])
         .arg(dst)
         .status()
         .is_ok_and(|s| s.success())

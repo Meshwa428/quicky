@@ -11,20 +11,32 @@ pub struct Media {
     pub duration: f64,
     pub has_video: bool,
     pub has_audio: bool,
-    /// Frame size of the first video stream, 0 without one.
+    /// Frame size of the first video stream as it displays (rotation
+    /// applied, as ffmpeg's autorotate renders it), 0 without one.
     pub width: u32,
     pub height: u32,
 }
 
 pub fn probe(path: &Path) -> Media {
     let out = Command::new("ffprobe")
-        .args(["-v", "error", "-show_entries", "format=duration:stream=codec_type,width,height", "-of", "default=nw=1"])
+        .args([
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration:stream=codec_type,width,height:stream_tags=rotate:stream_side_data=rotation",
+            "-of",
+            "default=nw=1",
+        ])
         .arg(path)
         .output();
     let mut media = Media::default();
     let Ok(out) = out else { return media };
+    let mut rotation: Option<i32> = None;
     for line in String::from_utf8_lossy(&out.stdout).lines() {
         match line.split_once('=') {
+            // Phone clips store a landscape frame plus a display rotation
+            // (side data, or the older `rotate` tag).
+            Some(("rotation" | "TAG:rotate", v)) if rotation.is_none() => rotation = v.trim().parse().ok(),
             Some(("duration", v)) => media.duration = v.trim().parse().unwrap_or(0.0),
             Some(("codec_type", "video")) => media.has_video = true,
             Some(("codec_type", "audio")) => media.has_audio = true,
@@ -32,6 +44,11 @@ pub fn probe(path: &Path) -> Media {
             Some(("height", v)) if media.height == 0 => media.height = v.trim().parse().unwrap_or(0),
             _ => {}
         }
+    }
+    // ffmpeg turns such frames upright before filtering, so boxes and crops
+    // must be laid out on the rotated size or they land in the wrong place.
+    if rotation.is_some_and(|r| r.rem_euclid(180) == 90) {
+        std::mem::swap(&mut media.width, &mut media.height);
     }
     // Cover art shows up as a one-frame "video" stream on audio files.
     if media.has_video && is_audio_ext(path) {

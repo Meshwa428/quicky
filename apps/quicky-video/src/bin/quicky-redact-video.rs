@@ -275,11 +275,27 @@ fn redact(src: &Path, dst: &Path, boxes: &[(Rect, (f64, f64))], style: Style, co
             let mut last = "base".to_string();
             for (i, (r, span)) in boxes.iter().enumerate() {
                 let (x, y, w, h) = r.pixels(vw, vh);
+                let pixelate = format!("crop={w}:{h}:{x}:{y},scale=max(1\\,iw/{strength}):max(1\\,ih/{strength}),scale={w}:{h}:flags=neighbor");
                 let soften = match style {
-                    Style::Blur => format!("boxblur={}:2", (strength).min(w.min(h) / 2 - 1).max(1)),
-                    _ => format!("scale=max(1\\,iw/{strength}):max(1\\,ih/{strength}),scale={w}:{h}:flags=neighbor"),
+                    Style::Blur => {
+                        // A box blur reaches at most half the area it is given,
+                        // so blur a margin around the box and cut the box back out.
+                        let pad = strength * 2;
+                        let (px, py) = ((x - pad).max(0), (y - pad).max(0));
+                        let (pw, ph) = ((x + w + pad).min(vw) - px, (y + h + pad).min(vh) - py);
+                        let luma = strength.min(pw.min(ph) / 2 - 1);
+                        // Chroma planes are half size.
+                        let chroma = luma.min(pw.min(ph) / 4 - 1).max(0);
+                        if luma >= strength / 2 {
+                            format!("crop={pw}:{ph}:{px}:{py},boxblur={luma}:2:{chroma}:2,crop={w}:{h}:{}:{}", x - px, y - py)
+                        } else {
+                            // Too small to blur hard enough to hide anything.
+                            pixelate
+                        }
+                    }
+                    _ => pixelate,
                 };
-                graph += &format!("[c{i}]crop={w}:{h}:{x}:{y},{soften}[s{i}];[{last}][s{i}]overlay={x}:{y}:{}[o{i}];", when(*span));
+                graph += &format!("[c{i}]{soften}[s{i}];[{last}][s{i}]overlay={x}:{y}:{}[o{i}];", when(*span));
                 last = format!("o{i}");
             }
             graph += &format!("[{last}]null[v]");
@@ -287,6 +303,7 @@ fn redact(src: &Path, dst: &Path, boxes: &[(Rect, (f64, f64))], style: Style, co
     }
     let mut cmd = Command::new("ffmpeg");
     cmd.args(["-v", "error", "-y", "-i"]).arg(src);
-    cmd.args(["-filter_complex", &graph, "-map", "[v]", "-map", "0:a?", "-c:v", "libx264", "-crf", "18", "-preset", "medium", "-c:a", "copy"]);
+    // Container metadata (recording location, device, dates) is dropped too.
+    cmd.args(["-filter_complex", &graph, "-map", "[v]", "-map", "0:a?", "-map_metadata", "-1", "-c:v", "libx264", "-crf", "18", "-preset", "medium", "-c:a", "copy"]);
     media::run(cmd.arg(dst))
 }
