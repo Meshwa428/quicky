@@ -145,21 +145,56 @@ terminals.
 
 ## Install
 
+Quicky needs [Omarchy](https://omarchy.org/) with its Quickshell-based shell, which
+has plugin support.
+
+**1. Add the plugin:**
+
 ```bash
-omarchy plugin add <this-repo-url> --enable
+omarchy plugin add https://github.com/Meshwa428/quicky --enable
 ```
 
-Then add the Files shortcut and the keybinding:
+This clones the repo into `~/.config/omarchy/plugins/meshwa.oma-quicky/` and turns
+it on.
+
+**2. Add the Files shortcut and the window rules:**
 
 ```bash
 ~/.config/omarchy/plugins/meshwa.oma-quicky/bin/quicky setup   # Nautilus F4 shortcut + Hyprland window rules
 nautilus -q                                                    # restart Files to load it
 ```
 
+**3. Add the keybinding** to `~/.config/hypr/bindings.lua`:
+
 ```lua
--- ~/.config/hypr/bindings.lua
 o.bind("SUPER + ALT + C", "Quicky", "~/.config/omarchy/plugins/meshwa.oma-quicky/bin/quicky open")
 ```
+
+**4. Optional: build the editor apps** (Trim, Crop, Annotate, …). These need a Rust
+toolchain, plus libmpv and GTK 4, which Omarchy already has:
+
+```bash
+omarchy pkg add rustup && rustup default stable     # skip if you already have cargo
+~/.config/omarchy/plugins/meshwa.oma-quicky/apps/install.sh
+```
+
+### Update
+
+```bash
+omarchy plugin update meshwa.oma-quicky
+omarchy restart shell                                               # load the new QML
+~/.config/omarchy/plugins/meshwa.oma-quicky/apps/install.sh         # if you use the editor apps
+```
+
+### Uninstall
+
+```bash
+omarchy plugin remove meshwa.oma-quicky
+```
+
+Then delete the `SUPER + ALT + C` line from `bindings.lua`. The editor apps live in
+`~/.local/bin/quicky-*` and `~/.local/share/applications/quicky.*.desktop`; delete them
+too if you built them.
 
 ## Develop
 
@@ -176,9 +211,34 @@ To try changes in the shell, copy the files into
 symlinks). The plugin is `keepLoaded`, so QML changes take effect only after
 `omarchy-restart-shell`.
 
+### Publishing a change
+
+```bash
+omarchy plugin validate .            # the manifest, entry points, no symlinks
+git add -A && git commit -m "…"
+git push                             # users get it with: omarchy plugin update meshwa.oma-quicky
+```
+
+For a release:
+1. Bump `version` in `manifest.json` and in `apps/Cargo.toml`.
+2. Commit, then tag and push the tag:
+   ```bash
+   git tag v0.2.0 && git push --tags
+   ```
+3. `gh release create v0.2.0 --generate-notes` writes a release page from the commits.
+
 ## How it reads the Files selection
 
 Wayland doesn't let one app read another app's selection. Instead,
 `quicky setup` installs a Nautilus script bound to F4, and Nautilus passes the
 selected paths to it. When Files is focused, Super+Alt+C just sends F4 to it
 (`hl.dsp.send_key_state` — Hyprland's Lua config takes dispatchers as Lua). Your clipboard is never touched.
+
+## License
+
+MIT. See [LICENSE](LICENSE). Copyright (c) 2026 Meshwa.
+
+Quicky is an independent project. It isn't affiliated with or endorsed by
+Tangerine or its makers: the name is used only to describe the style of tool
+this is. It calls ImageMagick, ffmpeg, LibreOffice and the other tools listed
+above as separate programs, and each keeps its own license.

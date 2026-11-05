@@ -6,6 +6,8 @@ members = ["quicky-ui", "quicky-trim", "quicky-metadata", "quicky-crop", "quicky
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
+authors = ["Meshwa"]
+repository = "https://github.com/Meshwa428/quicky"
 
 [workspace.dependencies]
 gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }

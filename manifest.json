@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Meshwa",
   "license": "MIT",
+  "repository": "https://github.com/Meshwa428/quicky",
   "description": "Tangerine-style offline file converter: a wheel at your cursor to convert, compress, merge, and act on files",
   "kinds": [
     "overlay"
