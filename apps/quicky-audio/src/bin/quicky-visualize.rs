@@ -87,7 +87,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
     }
     body.append(&preview);
 
-    let play = gtk::Button::builder().label("▶").tooltip_text("Preview  Space").halign(gtk::Align::Start).build();
+    let play = gtk::Button::builder().icon_name("media-playback-start-symbolic").tooltip_text("Preview  Space").halign(gtk::Align::Start).build();
     play.add_css_class("flat");
     body.append(&play);
 
@@ -117,7 +117,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
             if !player.paused() {
                 preview.queue_draw();
             }
-            play.set_label(if player.paused() { "▶" } else { "⏸\u{fe0e}" });
+            quicky_ui::frame::show_playing(&play, !player.paused());
             glib::ControlFlow::Continue
         });
     }

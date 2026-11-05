@@ -36,9 +36,9 @@ impl Deck {
 
         let timeline = Timeline::with_marks(media.duration, palette.clone(), strip, marks);
 
-        let back = gtk::Button::builder().label("◁|").tooltip_text("Previous frame  ,").build();
-        let play = gtk::Button::builder().label("▶").tooltip_text("Play / pause  Space").build();
-        let fwd = gtk::Button::builder().label("|▷").tooltip_text("Next frame  .").build();
+        let back = gtk::Button::builder().icon_name("media-seek-backward-symbolic").tooltip_text("Previous frame  ,").build();
+        let play = gtk::Button::builder().icon_name("media-playback-start-symbolic").tooltip_text("Play / pause  Space").build();
+        let fwd = gtk::Button::builder().icon_name("media-seek-forward-symbolic").tooltip_text("Next frame  .").build();
         let clock = gtk::Label::builder().hexpand(true).xalign(1.0).build();
         clock.add_css_class("dim");
         let transport = gtk::Box::new(gtk::Orientation::Horizontal, 2);
@@ -75,7 +75,7 @@ impl Deck {
                     timeline.set_playhead(t);
                     clock.set_text(&format!("{} / {total}", media::fmt_time(t)));
                 }
-                play.set_label(if player.paused() { "▶" } else { "⏸\u{fe0e}" });
+                crate::frame::show_playing(&play, !player.paused());
                 glib::ControlFlow::Continue
             });
         }

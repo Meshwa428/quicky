@@ -230,8 +230,8 @@ fn build(app: &gtk::Application, files: Vec<PathBuf>) {
                 index.add_css_class("dim");
                 row.append(&index);
                 row.append(&gtk::Label::builder().label(name).xalign(0.0).hexpand(true).ellipsize(gtk::pango::EllipsizeMode::Middle).build());
-                for (face, delta, ok) in [("▲", -1i32, i > 0), ("▼", 1, i + 1 < names.len())] {
-                    let b = gtk::Button::builder().label(face).sensitive(ok).build();
+                for (icon, delta, ok) in [("go-up-symbolic", -1i32, i > 0), ("go-down-symbolic", 1, i + 1 < names.len())] {
+                    let b = gtk::Button::builder().icon_name(icon).sensitive(ok).build();
                     b.add_css_class("flat");
                     let (order, redraw, slot) = (order.clone(), redraw.clone(), slot.clone());
                     b.connect_clicked(move |_| {

@@ -34,17 +34,17 @@ enum Tool {
     Magnify,
 }
 
-/// Toolbar: tool, button face, tooltip.
+/// Toolbar: tool, icon (apps/icons, installed into hicolor), tooltip.
 const TOOLS: [(Tool, &str, &str); 9] = [
-    (Tool::Select, "↖", "Select and move"),
-    (Tool::Arrow, "↗", "Arrow: drag from the tail toward the head"),
-    (Tool::Line, "╱", "Line"),
-    (Tool::Text, "Aa", "Text: click where it goes"),
-    (Tool::Rect, "▭", "Box"),
-    (Tool::Ellipse, "◯", "Ellipse"),
-    (Tool::Pen, "✎", "Pencil"),
-    (Tool::Number, "①", "Numbered label: click to place the next number"),
-    (Tool::Magnify, "⊕", "Magnifier: drag out a loupe"),
+    (Tool::Select, "quicky-select-symbolic", "Select and move"),
+    (Tool::Arrow, "quicky-arrow-symbolic", "Arrow: drag from the tail toward the head"),
+    (Tool::Line, "quicky-line-symbolic", "Line"),
+    (Tool::Text, "quicky-text-symbolic", "Text: click where it goes"),
+    (Tool::Rect, "quicky-rect-symbolic", "Box"),
+    (Tool::Ellipse, "quicky-ellipse-symbolic", "Ellipse"),
+    (Tool::Pen, "quicky-pen-symbolic", "Pencil"),
+    (Tool::Number, "quicky-number-symbolic", "Numbered label: click to place the next number"),
+    (Tool::Magnify, "quicky-magnify-symbolic", "Magnifier: drag out a loupe"),
 ];
 
 const COLORS: [&str; 6] = ["#ff3b30", "#ff9500", "#ffcc00", "#34c759", "#0a84ff", "#ffffff"];
@@ -238,8 +238,8 @@ fn build(app: &gtk::Application, path: PathBuf) {
     // Toolbar.
     let tools = gtk::Box::new(gtk::Orientation::Horizontal, 2);
     let mut tool_buttons: Vec<gtk::ToggleButton> = Vec::new();
-    for (tool, face, tip) in TOOLS {
-        let b = gtk::ToggleButton::builder().label(face).tooltip_text(tip).hexpand(true).build();
+    for (tool, icon, tip) in TOOLS {
+        let b = gtk::ToggleButton::builder().icon_name(icon).tooltip_text(tip).hexpand(true).build();
         b.add_css_class("compact");
         if let Some(first) = tool_buttons.first() {
             b.set_group(Some(first));

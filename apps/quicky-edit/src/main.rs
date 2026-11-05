@@ -82,6 +82,24 @@ fn build(app: &gtk::Application, path: PathBuf) {
     let scroller = gtk::ScrolledWindow::builder().child(&controls).vexpand(true).hscrollbar_policy(gtk::PolicyType::Never).build();
     body.append(&scroller);
 
+    // Rotate and flip, above the sliders: (quarter turns, flip h, flip v).
+    let orientation = Rc::new(Cell::new((0u8, false, false)));
+    controls.append(&Frame::section("Rotate"));
+    let turns = gtk::Box::new(gtk::Orientation::Horizontal, 4);
+    let mut orient_buttons = Vec::new();
+    for (icon, tip) in [
+        ("object-rotate-left-symbolic", "Rotate left"),
+        ("object-rotate-right-symbolic", "Rotate right"),
+        ("object-flip-horizontal-symbolic", "Flip horizontal"),
+        ("object-flip-vertical-symbolic", "Flip vertical"),
+    ] {
+        let b = gtk::Button::builder().icon_name(icon).tooltip_text(tip).hexpand(true).build();
+        b.add_css_class("compact");
+        turns.append(&b);
+        orient_buttons.push(b);
+    }
+    controls.append(&turns);
+
     let mut scales = Vec::new();
     let mut group = "";
     for (g, label, range, step, neutral, fmt, _) in SLIDERS {
@@ -97,12 +115,13 @@ fn build(app: &gtk::Application, path: PathBuf) {
     // ---------------------------------------------------------------- wiring
 
     let settings = {
-        let scales = scales.clone();
+        let (scales, orientation) = (scales.clone(), orientation.clone());
         move || {
             let mut s = Settings::default();
             for (scale, (.., set)) in scales.iter().zip(SLIDERS) {
                 set(&mut s, scale.value());
             }
+            (s.turns, s.flip_h, s.flip_v) = orientation.get();
             s
         }
     };
@@ -126,12 +145,32 @@ fn build(app: &gtk::Application, path: PathBuf) {
         let refresh = refresh.clone();
         scale.connect_value_changed(move |_| refresh());
     }
+    // A flip after a quarter turn would mirror the turned picture, so flips
+    // swap axes while the photo is on its side: what you see flips.
+    for (i, b) in orient_buttons.iter().enumerate() {
+        let (orientation, refresh) = (orientation.clone(), refresh.clone());
+        b.connect_clicked(move |_| {
+            let (t, h, v) = orientation.get();
+            let sideways = t % 2 == 1;
+            orientation.set(match i {
+                0 => ((t + 3) % 4, h, v),
+                1 => ((t + 1) % 4, h, v),
+                2 if sideways => (t, h, !v),
+                2 => (t, !h, v),
+                _ if sideways => (t, !h, v),
+                _ => (t, h, !v),
+            });
+            refresh();
+        });
+    }
     {
-        let scales = scales.clone();
+        let (scales, orientation, refresh) = (scales.clone(), orientation.clone(), refresh.clone());
         reset.connect_clicked(move |_| {
             for (scale, (.., neutral, _, _)) in scales.iter().zip(SLIDERS) {
                 scale.set_value(neutral);
             }
+            orientation.set((0, false, false));
+            refresh();
         });
     }
 

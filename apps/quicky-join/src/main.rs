@@ -55,11 +55,12 @@ impl Mode {
         }
     }
 
-    fn glyph(self) -> &'static str {
+    fn icon(self) -> &'static str {
         match self {
-            Mode::Audio => "󰎆",
-            Mode::Pdf => "󰈦",
-            _ => "󰈔",
+            Mode::Video => "video-x-generic-symbolic",
+            Mode::Audio => "audio-x-generic-symbolic",
+            Mode::Pdf => "x-office-document-symbolic",
+            Mode::Images => "image-x-generic-symbolic",
         }
     }
 }
@@ -220,9 +221,9 @@ fn row_for(i: usize, file: &Path, count: usize, mode: Mode, thumb: Option<&Pixbu
                 .upcast()
         }
         None => {
-            let glyph = gtk::Label::builder().label(mode.glyph()).width_request(THUMB * 3 / 2).build();
-            glyph.add_css_class("title");
-            glyph.upcast()
+            let icon = gtk::Image::builder().icon_name(mode.icon()).pixel_size(THUMB / 2).width_request(THUMB * 3 / 2).build();
+            icon.add_css_class("dim");
+            icon.upcast()
         }
     };
     row.append(&picture);
@@ -231,8 +232,8 @@ fn row_for(i: usize, file: &Path, count: usize, mode: Mode, thumb: Option<&Pixbu
     let label = gtk::Label::builder().label(name).xalign(0.0).hexpand(true).ellipsize(gtk::pango::EllipsizeMode::Middle).build();
     row.append(&label);
 
-    let up = gtk::Button::builder().label("▲").tooltip_text("Move up").sensitive(i > 0).build();
-    let down = gtk::Button::builder().label("▼").tooltip_text("Move down").sensitive(i + 1 < count).build();
+    let up = gtk::Button::builder().icon_name("go-up-symbolic").tooltip_text("Move up").sensitive(i > 0).build();
+    let down = gtk::Button::builder().icon_name("go-down-symbolic").tooltip_text("Move down").sensitive(i + 1 < count).build();
     for b in [&up, &down] {
         b.add_css_class("flat");
         row.append(b);

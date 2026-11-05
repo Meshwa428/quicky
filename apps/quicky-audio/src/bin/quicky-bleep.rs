@@ -46,7 +46,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
     body.append(&caption);
     body.append(deck.timeline.widget());
     body.append(&deck.transport);
-    let (previews, preview_buttons) = Frame::choices(&["Original", "▶ With Bleeps"]);
+    let (previews, preview_buttons) = Frame::choices(&["Original", "With Bleeps"]);
     body.append(&Frame::labelled("Preview", &previews));
 
     let regions: Rc<RefCell<Vec<(f64, f64)>>> = Rc::default();

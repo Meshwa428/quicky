@@ -236,8 +236,8 @@ fn scrubber(path: &Path, m: &media::Media, canvas: &Canvas, palette: &Palette) -
     let column = gtk::Box::new(gtk::Orientation::Vertical, 4);
     let strip = Timeline::with_marks(m.duration, palette.clone(), 44, Marks::Points);
     column.append(strip.widget());
-    let back = gtk::Button::builder().label("◁|").tooltip_text("Previous frame").build();
-    let fwd = gtk::Button::builder().label("|▷").tooltip_text("Next frame").build();
+    let back = gtk::Button::builder().icon_name("media-seek-backward-symbolic").tooltip_text("Previous frame").build();
+    let fwd = gtk::Button::builder().icon_name("media-seek-forward-symbolic").tooltip_text("Next frame").build();
     let clock = gtk::Label::builder().hexpand(true).xalign(1.0).build();
     clock.add_css_class("dim");
     let row = gtk::Box::new(gtk::Orientation::Horizontal, 2);

@@ -109,9 +109,9 @@ fn build(app: &gtk::Application, path: PathBuf) {
     body.append(&ends);
 
     // Transport.
-    let back = gtk::Button::builder().label("◁|").tooltip_text("Previous frame  ,").build();
-    let play = gtk::Button::builder().label("▶").tooltip_text("Play / pause  Space").build();
-    let fwd = gtk::Button::builder().label("|▷").tooltip_text("Next frame  .").build();
+    let back = gtk::Button::builder().icon_name("media-seek-backward-symbolic").tooltip_text("Previous frame  ,").build();
+    let play = gtk::Button::builder().icon_name("media-playback-start-symbolic").tooltip_text("Play / pause  Space").build();
+    let fwd = gtk::Button::builder().icon_name("media-seek-forward-symbolic").tooltip_text("Next frame  .").build();
     let position = gtk::Label::builder().hexpand(true).xalign(1.0).build();
     position.add_css_class("dim");
     let transport = gtk::Box::new(gtk::Orientation::Horizontal, 2);
@@ -125,7 +125,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
     // Audio has no picture to watch, so it gets the two options Tangerine
     // shows instead.
     let silent = gtk::CheckButton::with_label("Trim silent ends automatically");
-    let play_range = gtk::Button::with_label("▶ Play selected range");
+    let play_range = Frame::icon_button("media-playback-start-symbolic", "Play selected range");
     if !video {
         back.set_visible(false);
         fwd.set_visible(false);
@@ -224,7 +224,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
                 timeline.set_playhead(t);
                 position.set_text(&format!("{} / {total}", media::fmt_time(t)));
             }
-            play.set_label(if player.paused() { "▶" } else { "⏸\u{fe0e}" });
+            quicky_ui::frame::show_playing(&play, !player.paused());
             glib::ControlFlow::Continue
         });
     }

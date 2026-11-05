@@ -23,6 +23,10 @@ pub struct Settings {
     pub dehaze: f64,
     pub grain: f64,
     pub noise: f64,
+    /// Quarter turns clockwise, 0..4.
+    pub turns: u8,
+    pub flip_h: bool,
+    pub flip_v: bool,
 }
 
 impl Default for Settings {
@@ -45,6 +49,9 @@ impl Default for Settings {
             dehaze: 0.0,
             grain: 0.0,
             noise: 0.0,
+            turns: 0,
+            flip_h: false,
+            flip_v: false,
         }
     }
 }
@@ -201,7 +208,26 @@ pub fn apply(src: &Pixbuf, s: &Settings) -> Option<Pixbuf> {
         }
     }
     let bytes = gtk::glib::Bytes::from_owned(out);
-    Some(Pixbuf::from_bytes(&bytes, Colorspace::Rgb, has_alpha, 8, w as i32, h as i32, (w * out_n) as i32))
+    orient(&Pixbuf::from_bytes(&bytes, Colorspace::Rgb, has_alpha, 8, w as i32, h as i32, (w * out_n) as i32), s)
+}
+
+/// Turns and flips last, so every adjustment above sees the photo's own
+/// orientation (clarity and grain don't care which way is up).
+fn orient(p: &Pixbuf, s: &Settings) -> Option<Pixbuf> {
+    use gtk::gdk_pixbuf::PixbufRotation::*;
+    let mut p = p.clone();
+    if s.flip_h {
+        p = p.flip(true)?;
+    }
+    if s.flip_v {
+        p = p.flip(false)?;
+    }
+    match s.turns % 4 {
+        1 => p.rotate_simple(Clockwise),
+        2 => p.rotate_simple(Upsidedown),
+        3 => p.rotate_simple(Counterclockwise),
+        _ => Some(p),
+    }
 }
 
 // A cheap, repeatable pseudo-random value in 0..1 per pixel.

@@ -131,6 +131,14 @@ impl Frame {
     }
 
     /// A small bold heading that starts a group of controls ("Light").
+    /// A button with a symbolic icon followed by text.
+    pub fn icon_button(icon: &str, text: &str) -> gtk::Button {
+        let face = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+        face.append(&gtk::Image::from_icon_name(icon));
+        face.append(&gtk::Label::new(Some(text)));
+        gtk::Button::builder().child(&face).build()
+    }
+
     pub fn section(text: &str) -> gtk::Label {
         let label = gtk::Label::builder().label(text).xalign(0.0).margin_top(4).build();
         label.add_css_class("section");
@@ -148,7 +156,7 @@ impl Frame {
         scale.set_draw_value(false);
         let readout = gtk::Label::builder().label(fmt(value)).xalign(1.0).width_chars(9).build();
         readout.add_css_class("dim");
-        let reset = gtk::Button::builder().label("↺").tooltip_text("Reset").build();
+        let reset = gtk::Button::builder().icon_name("edit-undo-symbolic").tooltip_text("Reset").build();
         reset.add_css_class("flat");
         reset.set_opacity(0.0);
         {
@@ -195,5 +203,14 @@ impl Frame {
             first.set_active(true);
         }
         (row, buttons)
+    }
+}
+
+/// Shows play or pause on an icon play button. Called from the players'
+/// polls, so it only touches the button when the state changed.
+pub fn show_playing(button: &gtk::Button, playing: bool) {
+    let icon = if playing { "media-playback-pause-symbolic" } else { "media-playback-start-symbolic" };
+    if button.icon_name().as_deref() != Some(icon) {
+        button.set_icon_name(icon);
     }
 }

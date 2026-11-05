@@ -53,7 +53,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
         let tag = gtk::Label::builder().label(label).width_chars(2).build();
         tag.add_css_class("dim");
         let wave = gtk::Picture::builder().can_shrink(true).content_fit(gtk::ContentFit::Fill).height_request(WAVE).hexpand(true).build();
-        let play = gtk::Button::builder().label("▶").tooltip_text(format!("Play the {} side", if side == 0 { "left" } else { "right" })).build();
+        let play = gtk::Button::builder().icon_name("media-playback-start-symbolic").tooltip_text(format!("Play the {} side", if side == 0 { "left" } else { "right" })).build();
         play.add_css_class("flat");
         row.append(&tag);
         row.append(&wave);
@@ -85,7 +85,8 @@ fn build(app: &gtk::Application, path: PathBuf) {
     let (right_row, right) = Frame::slider("Right volume", (0.0, 200.0), 1.0, 100.0, pct);
     body.append(&left_row);
     body.append(&right_row);
-    let play_output = gtk::Button::builder().label("▶ Play Output").halign(gtk::Align::Start).build();
+    let play_output = Frame::icon_button("media-playback-start-symbolic", "Play Output");
+    play_output.set_halign(gtk::Align::Start);
     body.append(&play_output);
 
     // ---------------------------------------------------------------- wiring

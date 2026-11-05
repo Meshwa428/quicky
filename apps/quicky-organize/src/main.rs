@@ -85,7 +85,7 @@ fn build(app: &gtk::Application, path: PathBuf) {
                 }
                 let badge = gtk::Label::builder().label((i + 1).to_string()).halign(gtk::Align::Start).valign(gtk::Align::End).build();
                 badge.add_css_class("badge");
-                let rotate = gtk::Button::builder().label("\u{f0465}").tooltip_text("Rotate").halign(gtk::Align::End).valign(gtk::Align::End).build();
+                let rotate = gtk::Button::builder().icon_name("object-rotate-right-symbolic").tooltip_text("Rotate").halign(gtk::Align::End).valign(gtk::Align::End).build();
                 rotate.add_css_class("compact");
                 let tile = gtk::Overlay::builder().child(&picture).build();
                 tile.add_overlay(&badge);

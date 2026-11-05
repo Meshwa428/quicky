@@ -15,3 +15,10 @@ for exe in target/release/quicky-*; do
 done
 install -m644 desktop/*.desktop "$apps/"
 update-desktop-database "$apps" 2>/dev/null || true
+
+# The editors' own symbolic icons (Annotate's tools); hicolor is every icon
+# theme's fallback, so they show whatever theme is active.
+icons="$HOME/.local/share/icons/hicolor/scalable/actions"
+mkdir -p "$icons"
+install -m644 icons/*.svg "$icons/"
+gtk-update-icon-cache -q -t "$HOME/.local/share/icons/hicolor" 2>/dev/null || true

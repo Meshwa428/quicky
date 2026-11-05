@@ -220,7 +220,7 @@ fn make_field(group: &str, tag: &str, value: &str, label_group: &gtk::SizeGroup)
         None
     };
 
-    let remove = gtk::Button::builder().label("⊖").tooltip_text("Remove this field").build();
+    let remove = gtk::Button::builder().icon_name("list-remove-symbolic").tooltip_text("Remove this field").build();
     remove.add_css_class("flat");
     remove.set_sensitive(editable);
     row.append(&remove);
@@ -236,7 +236,7 @@ fn make_field(group: &str, tag: &str, value: &str, label_group: &gtk::SizeGroup)
             if let Some(e) = &entry {
                 e.set_sensitive(!now);
             }
-            b.set_label(if now { "↺" } else { "⊖" });
+            b.set_icon_name(if now { "edit-undo-symbolic" } else { "list-remove-symbolic" });
             b.set_tooltip_text(Some(if now { "Keep this field" } else { "Remove this field" }));
         });
     }
