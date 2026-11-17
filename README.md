@@ -1,5 +1,7 @@
 # Quicky for Omarchy
 
+![The Quicky wheel open on street.jpg, offering PNG, WEBP, HEIC, AVIF, TIFF, BMP and PDF](preview.png)
+
 A [Tangerine](https://tangerineformac.com/)-style offline file converter for
 Omarchy. It opens a wheel at your cursor where you can convert, compress, merge,
 or act on files. Everything runs locally and nothing is uploaded.
